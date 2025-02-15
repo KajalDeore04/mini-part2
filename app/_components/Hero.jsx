@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 const Hero = () => {
@@ -21,9 +22,9 @@ const Hero = () => {
               level.
             </p>
 
-            <Button className="px-10 mt-20" href="#">
+            <Link href={'/dashboard'}><Button className="px-10 mt-20" href="#">
               Get Started
-            </Button>
+            </Button></Link>
           </div>
         </div>
       </section>
