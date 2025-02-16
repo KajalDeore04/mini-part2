@@ -11,6 +11,7 @@ import TopicDescription from "./_components/TopicDescription";
 import SelectOption from "./_components/SelectOption";
 import { UserInputContext } from "../_context/UserInputContext";
 import { GenerateCourseLayout_AI } from "@/configs/AiModel";
+import LoadingDialog from "./_components/LoadingDialog";
 
 const CreateCourse = () => {
   //context connection
@@ -127,6 +128,9 @@ const CreateCourse = () => {
           { activeIndex==2 && <Button disabled={checkStatus()} onClick={() => GenerateCourseLayout()}>Generate Course Layout</Button>}
         </div>
       </div>
+
+      <LoadingDialog loading={loading} />
+
     </div>
   );
 };
