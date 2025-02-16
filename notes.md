@@ -5,6 +5,10 @@ clerk
 react icons
 @google/generative-ai
 
+backend - 
+neon database
+drizzle kit
+
 # Home page
 create _components folder - because of _ nextjs doesnt understand it as new route
 
