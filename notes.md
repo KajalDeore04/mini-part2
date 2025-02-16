@@ -3,6 +3,7 @@ nextjs
 shadcn-ui - for ui components
 clerk
 react icons
+@google/generative-ai
 
 # Home page
 create _components folder - because of _ nextjs doesnt understand it as new route
