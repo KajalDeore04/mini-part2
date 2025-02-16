@@ -20,7 +20,7 @@ const {
   };
   
   
-    export const GenerateCourseLayout = model.startChat({
+    export const GenerateCourseLayout_AI = model.startChat({
       generationConfig,
       history: [ //takes reference from this for next output
         {
