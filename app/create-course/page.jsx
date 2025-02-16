@@ -12,20 +12,25 @@ import SelectOption from "./_components/SelectOption";
 import { UserInputContext } from "../_context/UserInputContext";
 import { GenerateCourseLayout_AI } from "@/configs/AiModel";
 import LoadingDialog from "./_components/LoadingDialog";
+import { db } from "@/configs/db";
+import { CourseList } from "@/configs/schema";
+import uuid4 from "uuid4";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const CreateCourse = () => {
+  const router = useRouter();
+
+
   //context connection
   const {userCourseInput, setUserCourseInput} = useContext(UserInputContext);
-
+  const {user} = useUser(); // from clerk
+  
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(userCourseInput);
-    
-  }, [userCourseInput]);
 
-// used to check next button enables or disabled
+  // used to check next button enables or disabled
   const checkStatus = () => {
     if(userCourseInput?.length == 0){
       return true;
@@ -42,6 +47,45 @@ const CreateCourse = () => {
     return false;
   }
 
+  const GenerateCourseLayout = async () => {
+    setLoading(true);
+    const BASIC_PROMPT = 'Generate a Course tutorial on following detail with field as course name, description, along with the chapter name, about, duration: '
+    const USER_INPUT_PROMPT = `Category:`+userCourseInput?.category+` ,Topic:`+userCourseInput.topic+`,Level:`+userCourseInput.level+`, Duration:`+userCourseInput.duration+`, NoOfChapters:`+userCourseInput.noOfChapter+`, in JSON format`
+    
+    const FINAL_PROMPT = BASIC_PROMPT+USER_INPUT_PROMPT
+    console.log(FINAL_PROMPT);
+    
+    // api call to AI model
+    const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
+    
+    console.log(result.response?.text());
+    console.log(JSON.parse(result.response?.text()));
+    
+    setLoading(false);
+    SaveCourseLayoutInDb(JSON.parse(result.response?.text()))
+    
+  }
+
+  const SaveCourseLayoutInDb =async (courseLayout) => {
+    var id = uuid4();
+    setLoading(true);
+    const result = await db.insert(CourseList).values({
+      courseId:id,
+      name:userCourseInput?.topic,
+      level:userCourseInput?.level,
+      category:userCourseInput?.category,
+      courseOutput:courseLayout,
+      createdBy:user?.primaryEmailAddress?.emailAddress,
+      userName: user.fullName,
+      userProfileImage:user?.imageUrl
+    })
+    console.log('filled user data in db');
+    
+    setLoading(false);
+    router.replace('/create-course/'+id) //redirect to course
+  }
+
+  
   const StepperOptions = [
     {
       id: 1,
@@ -59,25 +103,6 @@ const CreateCourse = () => {
       icon: <HiClipboardDocumentCheck />,
     },
   ];
-
-
-  const GenerateCourseLayout = async () => {
-    setLoading(true);
-    const BASIC_PROMPT = 'Generate a Course tutorial on following detail with field as course name, description, along with the chapter name, about, duration: '
-    const USER_INPUT_PROMPT = `Category:`+userCourseInput?.category+` ,Topic:`+userCourseInput.topic+`,Level:`+userCourseInput.level+`, Duration:`+userCourseInput.duration+`, NoOfChapters:`+userCourseInput.noOfChapter+`, in JSON format`
-
-    const FINAL_PROMPT = BASIC_PROMPT+USER_INPUT_PROMPT
-    console.log(FINAL_PROMPT);
-
-    // api call to AI model
-    const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
-
-    console.log(result.response?.text());
-    console.log(JSON.parse(result.response?.text()));
-    setLoading(false);
-    
-  }
-
   return (
     <div>
       {/* Stepper */}
@@ -85,7 +110,7 @@ const CreateCourse = () => {
         <h2 className="text-2xl text-primary font-medium">Create Course</h2>
         <div className="flex items-center mt-10" >
           {StepperOptions.map((item, index) => (
-            <div className="flex items-center">
+            <div key={item.id} className="flex items-center">
               <div className="flex flex-col items-center w-[50px] md:w-[100px]">
                 <div
                   className={`bg-gray-200 p-3 rounded-full text-white
