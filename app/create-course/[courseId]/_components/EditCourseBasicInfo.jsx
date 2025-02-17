@@ -22,8 +22,8 @@ const EditCourseBasicInfo = ({ course,refreshData }) => {
   const [description, setDescription] = useState();
 
   useEffect(() => {
-    setName(course.courseOutput?.courseName);
-    setDescription(course.courseOutput?.description);
+    setName(course?.courseOutput?.courseName);
+    setDescription(course?.courseOutput?.description);
   }, [course]);
 
   const onUpdateHandler = async () => {

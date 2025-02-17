@@ -5,6 +5,7 @@ import DropDownOption from './DropDownOption';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 import { eq } from 'drizzle-orm';
+import Link from 'next/link';
 
   
 
@@ -20,6 +21,7 @@ const CourseCard = ({course, refreshData}) => {
 
 
     return (
+        <Link href={'/course/'+course?.courseId}>
         <div className='shadow-lg p-2 rounded-lg border hover:scale-105 transition-all cursor-pointer mt-4' >
              <Image src={'/placeholder.png'} width={300} height={300} alt='placeholder'
              className='w-full h-[200px] object-cover rounded-lg' />
@@ -38,6 +40,7 @@ const CourseCard = ({course, refreshData}) => {
             </div>
              </div>
         </div>
+        </Link>
     );
 }
 

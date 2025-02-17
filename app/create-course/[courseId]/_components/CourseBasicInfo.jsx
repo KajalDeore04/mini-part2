@@ -5,7 +5,7 @@ import { HiOutlinePuzzlePiece, HiPencilSquare } from "react-icons/hi2";
 import EditCourseBasicInfo from "./EditCourseBasicInfo";
 
 
-const CourseBasicInfo = ({ course, refreshData }) => {
+const CourseBasicInfo = ({ course, refreshData, edit=true }) => {
  
 
   
@@ -15,11 +15,15 @@ const CourseBasicInfo = ({ course, refreshData }) => {
         <div>
           <h2 className="font-bold text-2xl">
             {course?.courseOutput?.courseName}{" "}
+            { 
+            edit &&            
             <EditCourseBasicInfo
               course={course}
               refreshData={() => refreshData(true)}
-            />{" "}
+            />
+            }
           </h2>
+        
           <p className="text-s text-gray-400 mt-3">
             {course?.courseOutput?.description}
           </p>
