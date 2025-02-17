@@ -1,6 +1,6 @@
 "use client";
 import { db } from "@/configs/db";
-import { CourseList } from "@/configs/schema";
+import { Chapters, CourseList } from "@/configs/schema";
 import { useUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
 import { useParams } from "next/navigation";
@@ -11,10 +11,13 @@ import ChapterList from "./_components/ChapterList";
 import { Button } from "@/components/ui/button";
 import { GenerateChapterContent_AI } from "@/configs/AiModel";
 import LoadingDialog from "../_components/LoadingDialog";
+import service from "@/configs/service";
+import { useRouter } from "next/navigation";
 
 const CourseLayout = () => {
   const { user } = useUser();
   const params = useParams();
+  const router = useRouter();
 
   const [course, setCourse] = useState([]);
   const [loading, setLoading] = useState(false)
@@ -36,52 +39,73 @@ const CourseLayout = () => {
         )
       );
 
-      setCourse(result[0])
+    setCourse(result[0])
     console.log(result);
   };
 
 
-  const GenerateChapterContent = () => {
-    setLoading(true)
-    const chapters = course?.courseOutput?.chapters
-    
-    chapters.forEach(async(chapter,index) => {
-      const PROMPT = 'Explain the concept in detail on Topic: '+course?.courseOutput?.courseName+', Chapter:'+course?.courseOutput?.chapters[index]?.chapterName+', in JSON format with list of array with field as title , explanation on given chapter in detail, code example(code field in <precode> format if applicable';
-
-
-      if(index<3){
-        try {
-          const result = await GenerateChapterContent_AI.sendMessage(PROMPT)
-          console.log(result?.response?.text());
-
-          //Generate video url
-
-          //save chapter content + video url
-          setLoading(false)
-        } catch (error) {
-        setLoading(false)
-         console.log(error);
-          
+  const GenerateChapterContent = async () => {
+    setLoading(true);
+    const chapters = course?.courseOutput?.chapters;
+  
+    // for (let index = 0; index < 3; index++) {
+      try {
+        const chapter = chapters[index];
+        const PROMPT =
+          "Explain the concept in detail on Topic: " +
+          course?.courseOutput?.courseName +
+          ", Chapter:" +
+          chapter?.chapterName +
+          ", in JSON format with list of array with field as title , explanation on given chapter in detail, code example(code field in <precode> format if applicable";
+  
+        // Generate video URL
+        let videoId = "";
+        const videoResponse = await service.getVideos(
+          course?.courseOutput?.courseName + ":" + chapter?.chapterName
+        );
+  
+        if (videoResponse?.length > 0) {
+          videoId = videoResponse[0]?.id?.videoId || "";
         }
+  
+        // Generate chapter content
+        const result = await GenerateChapterContent_AI.sendMessage(PROMPT);
+        const content = JSON.parse(result?.response?.text());
+  
+        // Save chapter content + video URL
+        await db.insert(Chapters).values({
+          chapterId: index,
+          courseId: course.courseId,
+          content: content,
+          videoId: videoId,
+        });
+  
+        console.log(`Saved Chapter ${index + 1}:`, { videoId, content });
+  
+      } catch (error) {
+        console.log("Error generating chapter content:", error);
       }
-      
-    });
-  }
+    //}
+  
+    setLoading(false);
+    router.replace("/create-course/" + course?.courseId + "/finish");
+  };
+  
 
   return (
     <div className="mt-10 px-7 md:px-20 lg:px-44">
-        <h2 className="font-bold text-center text-2xl">Course Layout</h2>
+      <h2 className="font-bold text-center text-2xl">Course Layout</h2>
 
-        <LoadingDialog loading={loading}/>
+      <LoadingDialog loading={loading} />
 
-        {/* Basic Info  */}
-        <CourseBasicInfo course={course} refreshData={()=>GetCourse()}/>
-        {/* Course detail */}
-        <CourseDetail course={course} />
-        {/* List of lessons */}
-        <ChapterList course={course} refreshData={()=>GetCourse()} />
+      {/* Basic Info  */}
+      <CourseBasicInfo course={course} refreshData={() => GetCourse()} />
+      {/* Course detail */}
+      <CourseDetail course={course} />
+      {/* List of lessons */}
+      <ChapterList course={course} refreshData={() => GetCourse()} />
 
-          <Button onClick={GenerateChapterContent} className='my-10'>Generate Course Content</Button>
+      <Button onClick={GenerateChapterContent} className='my-10'>Generate Course Content</Button>
     </div>
   );
 };

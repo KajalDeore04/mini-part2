@@ -6,7 +6,8 @@ const getVideos = async (query) => {
     const params={
         paprts:'snippet',
         q:query,
-        maxResult:2,
+        maxResults:1,
+        type:'video',
         key:process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
     }
 
