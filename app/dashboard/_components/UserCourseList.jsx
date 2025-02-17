@@ -3,11 +3,13 @@ import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 import { useUser } from '@clerk/nextjs';
 import { eq } from 'drizzle-orm';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CourseCard from './CourseCard';
+import { UserCourseListContext } from '@/app/_context/UserCourseListContext';
 
 const UserCourseList = () => {
     const {user} = useUser();
+    const {userCourseList, setUserCourseList} = useContext(UserCourseListContext)
 
     const [courseList, setCourseList] = useState([]);
 
@@ -20,6 +22,7 @@ const UserCourseList = () => {
 
         console.log(result);
         setCourseList(result)
+        setUserCourseList(result)
         
     }
     return (

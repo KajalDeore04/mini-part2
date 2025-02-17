@@ -21,7 +21,7 @@ const CourseCard = ({course, refreshData}) => {
 
     return (
         <div className='shadow-lg p-2 rounded-lg border hover:scale-105 transition-all cursor-pointer mt-4' >
-             <Image src={'/placeholder.png'} width={300} height={300}
+             <Image src={'/placeholder.png'} width={300} height={300} alt='placeholder'
              className='w-full h-[200px] object-cover rounded-lg' />
              <div className='p-2'>
                 <h2 className='font-medium text-lg flex justify-between items-center'>{course?.courseOutput?.courseName} <DropDownOption handleOnDelete={()=>handleOnDelete()}><HiMiniEllipsisVertical/></DropDownOption> </h2>
