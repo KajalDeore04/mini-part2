@@ -88,6 +88,9 @@ const CourseLayout = () => {
     //}
   
     setLoading(false);
+    await db.update(CourseList).set({
+      publish:true
+    })
     router.replace("/create-course/" + course?.courseId + "/finish");
   };
   
