@@ -1,14 +1,31 @@
 import Image from 'next/image';
 import React from 'react';
-import { HiOutlineBookOpen } from 'react-icons/hi2';
+import { HiMiniEllipsisVertical, HiOutlineBookOpen } from 'react-icons/hi2';
+import DropDownOption from './DropDownOption';
+import { db } from '@/configs/db';
+import { CourseList } from '@/configs/schema';
+import { eq } from 'drizzle-orm';
 
-const CourseCard = ({course}) => {
+  
+
+const CourseCard = ({course, refreshData}) => {
+
+    const handleOnDelete = async() => {
+        const resp = await db.delete(CourseList).where(eq(CourseList.id,course?.id)).returning({id:CourseList.id})
+
+        if(resp){
+            refreshData()
+        }
+    }
+
+
     return (
         <div className='shadow-lg p-2 rounded-lg border hover:scale-105 transition-all cursor-pointer mt-4' >
              <Image src={'/placeholder.png'} width={300} height={300}
              className='w-full h-[200px] object-cover rounded-lg' />
              <div className='p-2'>
-                <h2 className='font-medium text-lg'>{course?.courseOutput?.courseName}</h2>
+                <h2 className='font-medium text-lg flex justify-between items-center'>{course?.courseOutput?.courseName} <DropDownOption handleOnDelete={()=>handleOnDelete()}><HiMiniEllipsisVertical/></DropDownOption> </h2>
+                
 
                 <p className='text-sm text-gray-400 my-2'>{course?.courseOutput?.category}</p>
 
