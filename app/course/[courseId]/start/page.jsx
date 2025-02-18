@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ChapterListCard from "./_components/ChapterListCard";
 import ChapterContent from "./_components/ChapterContent";
+import Header from "@/app/dashboard/_components/Header";
 
 const CourseStart = () => {
   const params = useParams();
@@ -45,6 +46,7 @@ const CourseStart = () => {
 
   return (
     <div>
+      <Header/>
       {/* chapter list sidebar */}
       <div className="fixed md:w-64 hidden md:block h-screen  border-r shadow-sm ">
         <h2 className="font-medium text-white text-lg bg-primary p-3">
