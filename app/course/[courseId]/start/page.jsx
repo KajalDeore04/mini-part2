@@ -46,9 +46,9 @@ const CourseStart = () => {
 
   return (
     <div>
-      <Header/>
+      <Header />
       {/* chapter list sidebar */}
-      <div className="fixed md:w-64 hidden md:block h-screen  border-r shadow-sm ">
+      <div className="fixed md:w-64 hidden md:block h-screen border-r shadow-sm overflow-y-auto pb-20">
         <h2 className="font-medium text-white text-lg bg-primary p-3">
           {course?.courseOutput?.courseName}
         </h2>
@@ -70,10 +70,16 @@ const CourseStart = () => {
           ))}
         </div>
       </div>
-      {/* content  */}
-      <div className="md:ml-64 ">
-        {selectedChapter== null ? <h1 className="text-center flex items-center justify-center font-extrabold text-3xl mt-[20%] ">Select the chapter you want to study...</h1> : 
-        <ChapterContent chapter={selectedChapter} content={chapterContent} />}
+
+      {/* content */}
+      <div className="md:ml-64">
+        {selectedChapter == null ? (
+          <h1 className="text-center flex items-center justify-center font-extrabold text-3xl mt-[20%]">
+            Select the chapter you want to study...
+          </h1>
+        ) : (
+          <ChapterContent chapter={selectedChapter} content={chapterContent} />
+        )}
       </div>
     </div>
   );
