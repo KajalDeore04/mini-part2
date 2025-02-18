@@ -72,7 +72,8 @@ const CourseStart = () => {
       </div>
       {/* content  */}
       <div className="md:ml-64 ">
-        <ChapterContent chapter={selectedChapter} content={chapterContent} />
+        {selectedChapter== null ? <h1 className="text-center flex items-center justify-center font-extrabold text-3xl mt-[20%] ">Select the chapter you want to study...</h1> : 
+        <ChapterContent chapter={selectedChapter} content={chapterContent} />}
       </div>
     </div>
   );
