@@ -10,6 +10,7 @@ backend -
 neon database
 drizzle kit
 axios - http client for youtube
+react youtube npm package - to show video
 
 # Home page
 create _components folder - because of _ nextjs doesnt understand it as new route

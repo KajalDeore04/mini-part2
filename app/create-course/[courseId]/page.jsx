@@ -20,7 +20,7 @@ const CourseLayout = () => {
   const router = useRouter();
 
   const [course, setCourse] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (params?.courseId && user) {
@@ -39,16 +39,15 @@ const CourseLayout = () => {
         )
       );
 
-    setCourse(result[0])
+    setCourse(result[0]);
     console.log(result);
   };
-
 
   const GenerateChapterContent = async () => {
     setLoading(true);
     const chapters = course?.courseOutput?.chapters;
   
-    // for (let index = 0; index < 3; index++) {
+    for (let index = 0; index < chapters.length; index++) {
       try {
         const chapter = chapters[index];
         const PROMPT =
@@ -81,16 +80,16 @@ const CourseLayout = () => {
         });
   
         console.log(`Saved Chapter ${index + 1}:`, { videoId, content });
-  
       } catch (error) {
         console.log("Error generating chapter content:", error);
       }
-    //}
+    }
   
     setLoading(false);
-    await db.update(CourseList).set({
-      publish:true
-    })
+    
+    // Update course data
+    await db.update(CourseList).set({ publish: true });
+    await GetCourse(); // Refresh course data after update
     router.replace("/create-course/" + course?.courseId + "/finish");
   };
   
@@ -108,7 +107,9 @@ const CourseLayout = () => {
       {/* List of lessons */}
       <ChapterList course={course} refreshData={() => GetCourse()} />
 
-      <Button onClick={GenerateChapterContent} className='my-10'>Generate Course Content</Button>
+      <Button onClick={GenerateChapterContent} className="my-10">
+        Generate Course Content
+      </Button>
     </div>
   );
 };

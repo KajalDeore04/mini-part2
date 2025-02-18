@@ -21,10 +21,11 @@ const CourseCard = ({course, refreshData}) => {
 
 
     return (
-        <Link href={'/course/'+course?.courseId}>
         <div className='shadow-lg p-2 rounded-lg border hover:scale-105 transition-all cursor-pointer mt-4' >
+            <Link href={'/course/'+course?.courseId}>
              <Image src={'/placeholder.png'} width={300} height={300} alt='placeholder'
              className='w-full h-[200px] object-cover rounded-lg' />
+        </Link>
              <div className='p-2'>
                 <h2 className='font-medium text-lg flex justify-between items-center'>{course?.courseOutput?.courseName} <DropDownOption handleOnDelete={()=>handleOnDelete()}><HiMiniEllipsisVertical/></DropDownOption> </h2>
                 
@@ -40,7 +41,6 @@ const CourseCard = ({course, refreshData}) => {
             </div>
              </div>
         </div>
-        </Link>
     );
 }
 
