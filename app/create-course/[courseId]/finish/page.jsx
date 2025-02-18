@@ -38,7 +38,7 @@ const FinishScreen = () => {
   };
 
   const handleCopy = async () => {
-    const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/course/view/${course?.courseId}`;
+    const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/course/${course?.courseId}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 1000); // Reset after 2 seconds
