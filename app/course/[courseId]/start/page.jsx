@@ -41,7 +41,7 @@ const CourseStart = () => {
         )
       );
     setChapterContent(result[0]);
-    console.log(result);
+    console.log("Fetched Chapter Content");
   };
 
   return (

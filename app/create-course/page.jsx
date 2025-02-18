@@ -53,13 +53,13 @@ const CreateCourse = () => {
     const USER_INPUT_PROMPT = `Category:`+userCourseInput?.category+` ,Topic:`+userCourseInput.topic+`,Level:`+userCourseInput.level+`, Duration:`+userCourseInput.duration+`, NoOfChapters:`+userCourseInput.noOfChapter+`, in JSON format`
     
     const FINAL_PROMPT = BASIC_PROMPT+USER_INPUT_PROMPT
-    console.log(FINAL_PROMPT);
+    console.log("Prompt ready");
     
     // api call to AI model
     const result = await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
     
-    console.log(result.response?.text());
-    console.log(JSON.parse(result.response?.text()));
+    // console.log(result.response?.text());
+    // console.log(JSON.parse(result.response?.text()));
     
     setLoading(false);
     SaveCourseLayoutInDb(JSON.parse(result.response?.text()))
@@ -79,7 +79,7 @@ const CreateCourse = () => {
       userName: user.fullName,
       userProfileImage:user?.imageUrl
     })
-    console.log('filled user data in db');
+    console.log('Database updated');
     
     setLoading(false);
     router.replace('/create-course/'+id) //redirect to course

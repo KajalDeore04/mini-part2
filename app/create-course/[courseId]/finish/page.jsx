@@ -38,7 +38,7 @@ const FinishScreen = () => {
       );
 
     setCourse(result[0]);
-    console.log(result);
+    console.log("Course Fetched");
   };
 
   const handleCopy = async () => {

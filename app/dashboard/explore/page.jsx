@@ -16,7 +16,7 @@ const Explore = () => {
   const GetAllCourses = async () => {
     const result = await db.select().from(CourseList).limit(9).offset(pageIndex*9);
 
-    console.log(result);
+    console.log("Courses Fetched");
     setCourseList(result);
   };
   return (

@@ -40,7 +40,7 @@ const CourseLayout = () => {
       );
 
     setCourse(result[0]);
-    console.log(result);
+    console.log("Course Fetched");
   };
 
   const GenerateChapterContent = async () => {
@@ -79,7 +79,7 @@ const CourseLayout = () => {
           videoId: videoId,
         });
   
-        console.log(`Saved Chapter ${index + 1}:`, { videoId, content });
+        console.log(`Saved Chapter ${index + 1}:`);
       } catch (error) {
         console.log("Error generating chapter content:", error);
       }
