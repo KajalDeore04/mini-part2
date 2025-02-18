@@ -7,6 +7,10 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CourseBasicInfo from "../_components/CourseBasicInfo";
 import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { IoOpenOutline } from "react-icons/io5";
+
+import Link from "next/link";
+import { Router } from "next/router";
 
 const FinishScreen = () => {
   const { user } = useUser();
@@ -61,7 +65,9 @@ const FinishScreen = () => {
           copied ? "text-black font-semibold" : "text-gray-400"
         }`}
       >
-        {process.env.NEXT_PUBLIC_HOST_NAME}/course/view/{course?.courseId}
+        {process.env.NEXT_PUBLIC_HOST_NAME}/course/{course?.courseId}
+        <IoOpenOutline className='h-7 w-7 cursor-pointer transition-all text-primary scale-110' onClick={() => router.push(`${process.env.NEXT_PUBLIC_HOST_NAME}/course/${course?.courseId}`)}/>
+
         <HiOutlineClipboardDocumentCheck
           className={`h-7 w-7 cursor-pointer transition-all ${
             copied ? "text-primary scale-110" : "text-gray-500 hover:text-black"
