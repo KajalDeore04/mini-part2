@@ -6,11 +6,13 @@ import { UserInputContext } from "../_context/UserInputContext";
 const CreateCourseLayout = ({ children }) => {
     const [userCourseInput, setUserCourseInput] = useState([]);
   return (
-    <div>
+    <div className="min-h-screen ">
       <UserInputContext.Provider value={{userCourseInput, setUserCourseInput}}>
         <>
           <Header />
-          {children}
+          <div className="animate-in fade-in duration-300">
+            {children}
+          </div>
         </>
       </UserInputContext.Provider>
     </div>

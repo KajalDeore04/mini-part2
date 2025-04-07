@@ -1,4 +1,4 @@
-export default [
+export const  CategoryList =  [
     {
         id: 1,
         name: "Programming",
