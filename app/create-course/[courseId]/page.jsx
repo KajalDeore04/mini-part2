@@ -307,7 +307,7 @@ const ChapterEditor = () => {
       }
       
       await db.update(CourseList).set({ publish: true });
-      router.replace(`/create-course/${course.courseId}/finish`);
+      router.replace(`/create-course/${course.courseId}`);
       
     } catch (error) {
       console.error("Error generating content:", error);
