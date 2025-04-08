@@ -112,7 +112,7 @@ const Explore = () => {
     <div className="p-4 md:p-6 lg:p-8  text-white min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h2 className="text-6xl font-bold gradient-title">Explore More Projects</h2>
+          <h2 className="text-6xl font-bold gradient-title">Explore Projects</h2>
           <p className="text-zinc-400">Explore projects built using AI by other users</p>
         </div>
         

@@ -58,10 +58,16 @@ const Dashboard = () => {
       return (
         <div>
           <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-none">{children}</DropdownMenuTrigger>
+            <DropdownMenuTrigger className="focus:outline-none">{/* Add div to stop propagation on trigger click */}
+              <div onClick={(e) => e.stopPropagation()}>
+                {children}
+              </div></DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem
-                onClick={() => setOpenAlert(true)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Stop propagation here
+                  setOpenAlert(true);
+                }}
                 className="text-red-500 focus:text-red-600 focus:bg-red-50 transition-colors duration-300"
               >
                 <div className="flex items-center gap-2 py-1">
@@ -124,7 +130,9 @@ const Dashboard = () => {
 
       return (
         <Card className={`aspect-square overflow-hidden transition-all duration-500 hover:shadow-lg border ${cardColor.hover} hover:-translate-y-1 group`}>
-          <Link href={"/course/" + course?.courseId} className="block h-full">
+          <Link href={"/course/" + course?.courseId} className="block h-full" onClick={(e) => e.stopPropagation()} 
+          // Add safety
+          >
             <div className="flex flex-col h-full">
               <div className={`${cardColor.bg} p-4 flex items-center justify-between transition-all duration-300`}>
                 <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 transition-transform duration-300 group-hover:rotate-12">
@@ -205,7 +213,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8">
+    <div className="w-full max-w-8xl mx-auto px-4 py-8">
       <CourseCollection />
     </div>
   );
